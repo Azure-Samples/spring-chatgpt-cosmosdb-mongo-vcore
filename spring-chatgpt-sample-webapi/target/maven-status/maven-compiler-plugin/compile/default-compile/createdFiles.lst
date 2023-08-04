@@ -1,0 +1,5 @@
+com\microsoft\azure\spring\chatgpt\sample\webapi\Config.class
+com\microsoft\azure\spring\chatgpt\sample\webapi\models\ChatCompletionsRequest.class
+com\microsoft\azure\spring\chatgpt\sample\webapi\SpringChatgptSampleApplication.class
+com\microsoft\azure\spring\chatgpt\sample\webapi\SpringChatgptSampleApplication$1.class
+com\microsoft\azure\spring\chatgpt\sample\webapi\controllers\ChatController.class
