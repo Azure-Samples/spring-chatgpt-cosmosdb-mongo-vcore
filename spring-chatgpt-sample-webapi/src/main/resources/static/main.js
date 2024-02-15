@@ -5,6 +5,8 @@ const API_HEADER = {
   "Content-Type": "application/json",
 };
 
+const CHAT_HISTORY_URL = '/chathistory';
+
 var app = new Vue({
   el: '#main',
   data: {
@@ -163,6 +165,25 @@ var app = new Vue({
     saveChatHistory: function () {
       const chatHistory = JSON.stringify(this.chatHistory.data);
       localStorage.setItem("chatHistory", chatHistory);
+      //store chat history in cosmos asynchronously to avoid blocking the UI
+      void this.saveChatHistoryToCosmos();
+    },
+    saveChatHistoryToCosmos: async function () {
+      try {
+        for (let i = 0; i <= this.chatHistory.data.length; i++) {
+          const chatEntry = JSON.stringify(this.chatHistory.data[i]);
+          if (chatEntry != null) {
+            await fetch(CHAT_HISTORY_URL + "/save", {
+              method: 'POST',
+              headers: API_HEADER ?? {},
+              body: chatEntry
+            });
+          }
+        }
+      } catch (e) {
+        console.log(e);
+        alert("Error saving chat history: " + e);
+      }
     }
   }
 });
