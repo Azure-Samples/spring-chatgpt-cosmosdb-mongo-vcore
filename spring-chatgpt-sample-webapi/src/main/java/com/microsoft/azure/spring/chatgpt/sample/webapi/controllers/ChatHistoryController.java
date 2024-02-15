@@ -28,10 +28,8 @@ public class ChatHistoryController {
     }
 
     @PostMapping("/save")
-    public String chatHistory(@RequestBody ChatHistoryItem request) {
-
+    public ChatHistoryItem chatHistory(@RequestBody ChatHistoryItem request) {
         this.mongoTemplate.save(request);
-        log.info("Chat item saved");
-        return "chat item saved";
+        return request;
     }
 }

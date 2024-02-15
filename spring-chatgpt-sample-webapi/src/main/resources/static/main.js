@@ -162,22 +162,28 @@ var app = new Vue({
         return false;
       }
     },
-    saveChatHistory: async function () {
+    saveChatHistory: function () {
       const chatHistory = JSON.stringify(this.chatHistory.data);
+      localStorage.setItem("chatHistory", chatHistory);
+      //store chat history in cosmos asynchronously to avoid blocking the UI
+      void this.saveChatHistoryToCosmos();
+    },
+    saveChatHistoryToCosmos: async function () {
       try {
         for (let i = 0; i <= this.chatHistory.data.length; i++) {
           const chatEntry = JSON.stringify(this.chatHistory.data[i]);
-          await fetch(CHAT_HISTORY_URL + "/save", {
-            method: 'POST',
-            headers: API_HEADER ?? {},
-            body: chatEntry
-          });
+          if (chatEntry != null) {
+            await fetch(CHAT_HISTORY_URL + "/save", {
+              method: 'POST',
+              headers: API_HEADER ?? {},
+              body: chatEntry
+            });
+          }
         }
       } catch (e) {
         console.log(e);
         alert("Error saving chat history: " + e);
       }
-      localStorage.setItem("chatHistory", chatHistory);
     }
   }
 });
